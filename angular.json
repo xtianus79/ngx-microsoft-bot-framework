@@ -115,6 +115,41 @@
           }
         }
       }
+    },
+    "NgxMicrosoftBotFramework": {
+      "projectType": "library",
+      "root": "projects/ngx-microsoft-bot-framework",
+      "sourceRoot": "projects/ngx-microsoft-bot-framework/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-microsoft-bot-framework/tsconfig.lib.json",
+            "project": "projects/ngx-microsoft-bot-framework/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-microsoft-bot-framework/src/test.ts",
+            "tsConfig": "projects/ngx-microsoft-bot-framework/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-microsoft-bot-framework/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-microsoft-bot-framework/tsconfig.lib.json",
+              "projects/ngx-microsoft-bot-framework/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }},
   "defaultProject": "ngx-microsoft-bot-framework"
 }

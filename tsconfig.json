@@ -17,7 +17,15 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-microsoft-bot-framework": [
+        "dist/ngx-microsoft-bot-framework"
+      ],
+      "ngx-microsoft-bot-framework/*": [
+        "dist/ngx-microsoft-bot-framework/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

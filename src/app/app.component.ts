@@ -7,7 +7,7 @@ import { BotDirective, StyleSetDirective, AppService, ComService, Payload, DEFAU
     selector: "app-root",
     templateUrl: "./app.component.html",
     providers: [AppService, ComService, BotDirective, StyleSetDirective],
-    styleUrls: ["./app.component.scss"]
+    styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements AfterViewInit, OnInit {
     @ViewChild("botWindow", { static: false }) botWindowElement: ElementRef;

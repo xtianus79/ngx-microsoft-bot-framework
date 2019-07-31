@@ -10,5 +10,4 @@ export interface Payload_Response {
   url?: string;
   operation: any[];
   result: {};
-  true?;
 }

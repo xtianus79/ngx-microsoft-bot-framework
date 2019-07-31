@@ -6,15 +6,13 @@ import { AppService } from './app.service';
 import { ComService } from './com.service';
 import { Observable } from 'rxjs';
 
-import { Payload } from './bot-payload';
-import { DEFAULT_OPTIONS } from './default-options';
 import { StyleSetObj, StyleSetProp, StyleSetObjReturn } from './style-set';
 
 @Directive({
   selector: 'app-style-set',
   providers: [AppService, ComService]
 })
-export class StyleSetDirective implements OnInit, AfterViewInit, StyleSetProp, StyleSetObj { 
+export class StyleSetDirective implements StyleSetProp, StyleSetObj { 
   activities: StyleSetProp;
   activity: StyleSetProp;
   audioAttachment: StyleSetProp;
@@ -51,21 +49,6 @@ export class StyleSetDirective implements OnInit, AfterViewInit, StyleSetProp, S
   vimeoContent: StyleSetProp;
   warningNotification: StyleSetProp;
   youTubeContent: StyleSetProp;
- 
-  // constructor(
-  //   private http: HttpClient,
-  //   private appService: AppService,
-  //   private comService: ComService
-  // ) {
-  // }
-
-  public ngOnInit(): void {
-
-  }
-
-  public ngAfterViewInit(): void {
-
-  }
 
   Activities(a: StyleSetProp , b: StyleSetObjReturn) {
     return a = Object.assign({}, a, b);

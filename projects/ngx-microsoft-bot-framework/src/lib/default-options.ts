@@ -2,22 +2,6 @@ function fontFamily(fonts) {
   return fonts.map(font => `'${font}'`).join(', ');
 }
 
-/** cannot access interface so set values manually
-const DEFAULT_ACCENT = '#0063B1';
-const DEFAULT_SUBTLE = string; // With contrast 4.5:1 to white
-const PADDING_REGULAR = 10;
-*/
-
-/** previous settings
-  // Color and paddings
-  accent: DEFAULT_ACCENT,
-  backgroundColor: string,
-  cardEmphasisBackgroundColor: '#F0F0F0',
-  paddingRegular: PADDING_REGULAR,
-  paddingWide: PADDING_REGULAR * 2,
-  subtle: DEFAULT_SUBTLE,
- */
-
 export interface DEFAULT_OPTIONS {
   // Color and paddings
   accent?: string;
@@ -145,6 +129,39 @@ export interface DEFAULT_OPTIONS {
   spinnerAnimationPaddingRight?: any;
 
   // added properties for styling styleSet
+  activties?: {};
+  activity?: {};
+  audioAttachment?: {};
+  audioContent?: {};
+  avatar?: {};
+  bubble?: {};
+  carouselFilmStrip?: {};
+  carouselFlipper?: {};
+  connectivityNotification?: {};
+  dictationInterims?: {};
+  downloadAttachment?: {};
+  errorBox?: {};
+  errorNotification?: {};
+  microphoneButton?: {};
   root?: {};
-  text_content?: {};
+  scrollToEndButton?: {};
+  sendBox?: {};
+  sendBoxButton?: {};
+  sendBoxTextArea?: {};
+  sendBoxTextBox?: {};
+  sendStatus?: {};
+  singleAttachmentActivity?: {};
+  spinnerAnnimation?: {};
+  stackedLayout?: {};
+  suggestedAction?: {};
+  suggestedActionsStyleSet?: {};
+  textContent?: {};
+  timestamp?: {};
+  typingActivity?: {};
+  uploadButton?: {};
+  videoAttachment?: {};
+  videoContent?: {};
+  vimeoContent?: {};
+  warningNotification?: {};
+  youTubContent?: {};
 };

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject }    from 'rxjs';
 import { Payload } from './bot-payload';
+import { DEFAULT_OPTIONS } from './default-options';
 
 @Injectable()
 export class ComService {
@@ -15,17 +16,13 @@ export class ComService {
   styleSet$ = this.styleSetPayload.asObservable();
   styleOptions$ = this.styleOptionsPayload.asObservable();
 
-
   // Service message commands
   obtainToken(payload: Payload) {
-    console.log('this fired off', payload)
     this.secretDirectlineToken.next(payload);
   }
 
-  obtainStylePayload(stylesetPayload?: any, styleoptionsPayload?: any) {
-    console.log('this WENT OFF ', stylesetPayload);
-    console.log('this WENT OFFFF ', styleoptionsPayload);
-      this.styleSetPayload.next(stylesetPayload);
-      this.styleOptionsPayload.next(styleoptionsPayload);
+  obtainStylePayload(styleoptionsPayload?: any, stylesetPayload?: any) {
+    this.styleSetPayload.next(stylesetPayload);
+    this.styleOptionsPayload.next(styleoptionsPayload);
   }
 }

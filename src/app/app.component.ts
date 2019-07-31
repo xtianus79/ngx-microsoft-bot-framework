@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
 
 import { BotDirective, StyleSetDirective, AppService, ComService, Payload, DEFAULT_OPTIONS } from 'ngx-microsoft-bot-framework';
 
@@ -58,7 +57,7 @@ export class AppComponent implements AfterViewInit, OnInit {
           background: 'red' 
         }           
       },
-      text_content: {
+      textContent: {
         // fontFamily: '\'Comic Sans MS\', \'Arial\', sans-serif',
         // fontWeight: 'bold',
         cursor: 'crosshair',
@@ -87,38 +86,23 @@ export class AppComponent implements AfterViewInit, OnInit {
     error: any;
 
     constructor(
-      private http: HttpClient,
       private appService: AppService,
       private comService: ComService,
       private bot: BotDirective
-    ) {
-      comService.secretToken$.subscribe(
-      secret => {
-        console.log('astronaut ', secret)
-      }); 
+    ) { }
+    
+    public ngOnInit(): void {
+      this.obtainStylePayload();
+      this.obtainLocalToken();
+    }
+
+    public ngAfterViewInit(): void {
+      this.setBotDirective();
     }
 
     setBotDirective(): void {
       this.passViewChild = this.botWindowElement.nativeElement;
       this.bot.botDirective(this.passViewChild);
-    }
-    
-    public ngOnInit(): void {
-      // console.log('init dynamic 1', this.botWindowElement); // undefined
-       
-      //this.showConfigResponse();
-      // this.getHeroes();
-      this.obtainStylePayload();
-      this.obtainLocalToken();
-
-    }
-
-    public ngAfterViewInit(): void {
-      console.log('MAIN COMPONENT ', this.botWindowElement.nativeElement);
-      //console.log('init dynamicdd 2', this.botWindowElement); // undefined
-      // this.getHeroes();
-      this.setBotDirective();
-      // this.makeError();
     }
 
     obtainLocalToken() {
@@ -126,7 +110,7 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
 
     obtainStylePayload() {
-      this.comService.obtainStylePayload(this.stylesetPayload, this.styleOptionsPayload)
+      this.comService.obtainStylePayload(this.styleOptionsPayload, this.stylesetPayload)
     }
 
     makeError() {

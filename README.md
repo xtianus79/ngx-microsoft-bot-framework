@@ -7,7 +7,7 @@
     <a href="https://david-dm.org/xtianus79/ngx-microsoft-bot-framework"><img alt="npm" src="https://david-dm.org/xtianus79/ngx-microsoft-bot-framework.svg" alt="npm dependencies"></a>
 </div>
 
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?theme=corporate&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=main_pic"><img src="https://i.imgur.com/UZVFXHS.png"/></a>
+<a target="_blank" href="https://github.com/xtianus79/ngx-microsoft-bot-framework"><img src="https://i.imgur.com/UZVFXHS.png"/></a>
 
 # Why ngx-microsoft-bot-framework?
 This Angular library achieves 2 goals

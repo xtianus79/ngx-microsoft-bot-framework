@@ -214,7 +214,9 @@ That's It! You should be off and running at this point
 I am aware that more options from the webchat api will need to have the option to passthrough through the payload such as userId and Name and other api properties. This will be added in a future release.
 
 ## Bot Demo
-info coming soon
+The demo is live bot on the repository's `github.io` page here: <a href="https://xtianus79.github.io/ngx-microsoft-bot-framework/" target="_blank">https://xtianus79.github.io/ngx-microsoft-bot-framework</a>
+
+I may need to switch out the secret token web call to generate the temporary token.
 
 ## API
 info coming soon

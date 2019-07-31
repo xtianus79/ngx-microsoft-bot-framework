@@ -1,6 +1,6 @@
 {
   "name": "ngx-microsoft-bot-framework",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Microsoft Bot Framework for Angular implementation with webchat via the directline api",
   "keywords": ["Angular", "angular 6", "angular 7", "angular 8", "microsoft bot framework", "webchat", "directline"],
   "license": "MIT",

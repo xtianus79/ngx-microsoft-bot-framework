@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 
 import { ComService } from './com.service';
@@ -16,7 +16,7 @@ const httpOptions = {
 };
 
 @Injectable()
-export class AppService {
+export class BotService {
   webchatUrl: string;
   subscription: Subscription;
   botTokenHeader: HttpHeaders;
@@ -29,7 +29,7 @@ export class AppService {
     httpErrorHandler: HttpErrorHandler
   ) {
     this.handleError = httpErrorHandler.createHandleError('AppService');
-    this.subscription = comService.secretToken$.subscribe(
+    this.subscription = this.comService.botPayload$.subscribe(
       response => {
         this.botTokenHeader =
           httpOptions.headers.set('Authorization', 'BotConnector ' + response.secret);

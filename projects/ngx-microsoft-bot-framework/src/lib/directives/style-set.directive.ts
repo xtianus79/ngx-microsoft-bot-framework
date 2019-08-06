@@ -1,16 +1,13 @@
-import { Directive, ElementRef, OnInit, AfterViewInit } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Directive } from '@angular/core';
 
-import { AppService } from './app.service';
-import { ComService } from './com.service';
-import { Observable } from 'rxjs';
+import { BotService } from '../services/bot.service';
+import { ComService } from '../services/com.service';
 
-import { StyleSetObj, StyleSetProp, StyleSetObjReturn } from './style-set';
+import { StyleSetObj, StyleSetProp, StyleSetObjReturn } from '../interfaces/style-set';
 
 @Directive({
   selector: 'app-style-set',
-  providers: [AppService, ComService]
+  providers: [BotService, ComService]
 })
 export class StyleSetDirective implements StyleSetProp, StyleSetObj { 
   activities: StyleSetProp;

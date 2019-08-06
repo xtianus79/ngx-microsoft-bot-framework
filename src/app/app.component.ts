@@ -1,21 +1,22 @@
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 
-import { BotDirective, StyleSetDirective, AppService, ComService, Payload, DEFAULT_OPTIONS } from 'ngx-microsoft-bot-framework';
+import { BotDirective, StyleSetDirective, BotService, ComService, IPayload, DEFAULT_OPTIONS } from 'ngx-microsoft-bot-framework';
 
 @Component({
     selector: "app-root",
     templateUrl: "./app.component.html",
-    providers: [AppService, ComService, BotDirective, StyleSetDirective],
+    providers: [BotService, ComService, BotDirective, StyleSetDirective],
     styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements AfterViewInit, OnInit {
     @ViewChild("botWindow", { static: false }) botWindowElement: ElementRef;
     passViewChild: ViewChild;
 
-    payload: Payload = {
+    payload: IPayload = {
       secret: 'VQDSUGBn3Lo.SxWHKP4UXAvJWZaLXkUQGBABH4sjZU3NIjeesJnmW-g',
       url: 'https://webchat.botframework.com/api/tokens',
-      secretSetting: true
+      secretSetting: true,
+      webSocket: true
     };
     stylesetPayload: DEFAULT_OPTIONS = {
       rootHeight: '100%',
@@ -86,7 +87,7 @@ export class AppComponent implements AfterViewInit, OnInit {
     error: any;
 
     constructor(
-      private appService: AppService,
+      private appService: BotService,
       private comService: ComService,
       private bot: BotDirective
     ) { }

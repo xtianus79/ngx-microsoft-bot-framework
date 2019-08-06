@@ -1,13 +1,12 @@
+// directives
 import { Directive, ViewChild } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
-
 import { StyleSetDirective } from './style-set.directive';
-
-import { AppService } from './app.service';
-import { ComService } from './com.service';
-
-import { DEFAULT_OPTIONS } from './default-options';
-import { StyleSetProp } from './style-set';
+// services
+import { BotService } from '../services/bot.service';
+import { ComService } from '../services/com.service';
+// interfaces
+import { DEFAULT_OPTIONS } from '../interfaces/default-options';
+import { StyleSetProp } from '../interfaces/style-set';
 
 /**
  * Declares the WebChat property on the window object.
@@ -22,7 +21,7 @@ window.WebChat = window.WebChat || {};
 
 @Directive({
     selector: 'app-bot',
-    providers: [AppService, ComService]
+    providers: [BotService, ComService]
 })
 export class BotDirective {
 viewChild: ViewChild;
@@ -30,20 +29,23 @@ styleSet: StyleSetProp;
 styleOptions: DEFAULT_OPTIONS;
 secretSetting: boolean;
 secret: string;
+userId: string = 'USER_ID';
+webSocket: boolean = true;
 error: any;
 
   constructor(
     private styleSetDir: StyleSetDirective,
-    private http: HttpClient,
-    private appService: AppService,
+    private botService: BotService,
     private comService: ComService
   ) {
-    comService.secretToken$.subscribe(
-    secret => {
-      this.secretSetting = secret.secretSetting;
-      this.secret = secret.secret;
+    this.comService.botPayload$.subscribe(
+    payload => {
+      this.secretSetting = payload.secretSetting;
+      this.secret = payload.secret;
+      payload.userId != undefined ? this.userId = payload.userId : this.userId;
+      payload.webSocket != undefined ? this.webSocket = payload.webSocket : this.webSocket;
     }); 
-    comService.styleSet$.subscribe(
+    this.comService.styleSet$.subscribe(
       response => {
         if (response != null || response != undefined) {
           // styleset set to property options for creatstyleset set from user
@@ -86,7 +88,7 @@ error: any;
           this.styleSetDir.youTubeContent = response.youTubContent;
         }
       });
-    comService.styleOptions$.subscribe(
+    this.comService.styleOptions$.subscribe(
       response => {
         if (response !== null || response !== undefined) {
           this.styleOptions = response;
@@ -94,24 +96,30 @@ error: any;
       }
     )
   }
-
+  /**
+  * botDirective initiates the botservice to retreive token or secret,
+  * initiates renderWebChat and activates the directLine api.
+  * set styles from styleSet and styleOptions properties 
+  * @viewChild is the only required parameter
+  * Use the bot-helper for full access and control of directline webchat api
+  */
   botDirective(viewChild): void {
     this.viewChild = viewChild;
     let token: string;
-    this.appService.getTokenObs()
+    this.botService.getTokenObs()
       .subscribe(
         response => {            
           this.secretSetting ? token = response.body : token = this.secret;
           if (response.status == 200 && response.statusText == 'OK' || response == false) {
             const directLine = window.WebChat.createDirectLine({
                 secret: token,
-                webSocket: false
+                webSocket: this.webSocket
             });
             if (this.styleSet && this.styleOptions) {
               window.WebChat.renderWebChat(
                   {
                       directLine: directLine,
-                      userID: "USER_ID",
+                      userID: this.userId,
                       styleOptions: this.styleOptions,
                       styleSet: this.styleSet
                   },
@@ -121,7 +129,7 @@ error: any;
               window.WebChat.renderWebChat(
                   {
                       directLine: directLine,
-                      userID: "USER_ID",
+                      userID: this.userId,
                       styleSet: this.styleSet
                   },
                   this.viewChild
@@ -131,7 +139,7 @@ error: any;
               window.WebChat.renderWebChat(
                   {
                       directLine: directLine,
-                      userID: "USER_ID",
+                      userID: this.userId,
                       styleOptions: this.styleOptions,
                   },
                   this.viewChild
@@ -140,14 +148,14 @@ error: any;
               window.WebChat.renderWebChat(
                   {
                       directLine: directLine,
-                      userID: "USER_ID",
+                      userID: this.userId,
                   },
                   this.viewChild
               );
             }
             directLine
                 .postActivity({
-                    from: { id: "USER_ID", name: "USER_NAME" },
+                    from: { id: this.userId, name: "USER_NAME" },
                     name: "requestWelcomeDialog",
                     type: "event",
                     value: "token"
@@ -199,6 +207,6 @@ error: any;
       );
   }
   makeError() {
-    this.appService.makeIntentionalError().subscribe(null, error => this.error = error );
+    this.botService.makeIntentionalError().subscribe(null, error => this.error = error );
   }
 }

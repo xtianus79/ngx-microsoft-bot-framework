@@ -1,5 +1,5 @@
 # ngx-microsoft-bot-framework
-[Why ngx-microsoftbot-framework?](#why-ngx-microsoft-bot-framework?) | [Table of Contents](#table-of-contents)
+[Why ngx-microsoftbot-framework?](#why-ngx-microsoft-bot-framework?) | [Table of Contents](#table-of-contents) | [Installation](#installation) | [Advanced Installation](#advanced-installation)
 
 <div>
     <a href="https://badge.fury.io/js/ngx-microsoft-bot-framework"><img src="https://badge.fury.io/js/ngx-microsoft-bot-framework.svg" alt="npm version" height="18"></a>
@@ -30,22 +30,23 @@ If you want complete custom styling to a granular level then I would use both pa
 ## Table of contents
 1. [Before We Begin](#before-we-begin)
 2. [Installation](#installation)
-3. [Bot Demo](#bot-demo)
-4. [API](#api)
-5. [Compatibility](#compatibility)
-6. [Troubleshooting](#troubleshooting)
-7. [Contributing](#contribution)
+3. [Advanced Installation](#advanced-installation)
+4. [Bot Demo](#bot-demo)
+5. [API](#api)
+6. [Compatibility](#compatibility)
+7. [Troubleshooting](#troubleshooting)
+8. [Contributing](#contribution)
 
 ## Before We Begin
-First, read over the documentation about the [Bot Framework Web Chat](https://github.com/microsoft/BotFramework-WebChat) api. 
+First, read over the documentation about the <a href="https://github.com/microsoft/BotFramework-WebChat" target="_blank">Bot Framework Web Chat</a> api. 
 
 > This repository contains code for the Bot Framework Web Chat component. The Bot Framework Web Chat component is a highly-customizable web-based client for the Bot Framework V4 SDK. The Bot Framework SDK v4 enables developers to model conversation and build sophisticated bot applications.
 
 ***Warning*** The information can be a lot to take in at first.  And the npm install botframework-webchat referred to in the documentation is specifically built for React. Hence, why I built this repo specifically for Angular.
 
-The good news is the core of the Web Chat api is on a URL called [Web Chat CDN](https://github.com/microsoft/BotFramework-WebChat/blob/master/samples/01.a.getting-started-full-bundle/README.md)
+The good news is the core of the Web Chat api is on a URL called <a href="https://github.com/microsoft/BotFramework-WebChat/blob/master/samples/01.a.getting-started-full-bundle/README.md" target="_blank">Web Chat CDN</a>
 
-Next, Well you're going to need a bot! So where do we get one of these awesome bots? Create and learn about the Microsoft Bot Framework over at the [Azure Bot Service.](https://azure.microsoft.com/en-us/services/bot-service) Here you can create a bot and obtain a secret key for the Web Chat setup. 
+Next, Well you're going to need a bot! So where do we get one of these awesome bots? Create and learn about the Microsoft Bot Framework over at the <a href="https://azure.microsoft.com/en-us/services/bot-service" target="_blank">Azure Bot Service.</a> Here you can create a bot and obtain a secret key for the Web Chat setup. 
 
 To be clear, we will be implementing the cdn inside of the Angular applications index.html file. The URL gives the latest Web Chat library.
 ```javascript
@@ -86,10 +87,10 @@ Import all of these interfaces, classes and life-cycle hooks into the component 
 <!--- app.component.ts -->
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 ```
-
-Import the module and all its directives and interfaces:
+#### Note: Depending on your webchat implementation you may only wish to use the `BotDirective` or the `BotHelperDirective`
+Import the `ngx-microsoft-bot-framework` module and it's directives, services and interfaces: 
 ```javascript
-import { BotDirective, StyleSetDirective, AppService, ComService, Payload, DEFAULT_OPTIONS } from 'ngx-microsoft-bot-framework';
+import { BotDirective, BotHelperDirective, StyleSetDirective, BotService, ComService, IPayload, DEFAULT_OPTIONS } from 'ngx-microsoft-bot-framework';
 ```
 Add these 2 properties
 ```javascript
@@ -98,13 +99,15 @@ passViewChild: ViewChild;
 ```
 
 Add the default `Payload` property:
-#### Note: The url is optional if the `secretSetting` is set to false
+#### Note: The url is optional if the `secretSetting` is set to false | `userId` and `webSocket` are optional settings
 The false setting for `secretSetting` disables the web call to the botframework/api/token generator so the url is not neccessary:
 ```javascript
-payload: Payload = {
+payload: IPayload = {
     secret: 'VQDSUGBn3Lo.SxWHKP4UXAvJWZaLXkUQGBABH4sjZU3NIjeesJnmW-g',
     url: 'https://webchat.botframework.com/api/tokens',
-    secretSetting: true
+    secretSetting: true,
+    userId: 'USER_ID',
+    webSocket: true
 };
 ```
 Optional: Styling the bot with 1 or 2 payloads is optional
@@ -212,6 +215,9 @@ Lastly, include the Web Chat CDN to the index.html file:
 That's It! You should be off and running at this point
 
 I am aware that more options from the webchat api will need to have the option to passthrough through the payload such as userId and Name and other api properties. This will be added in a future release.
+
+## Advanced Installation
+advanced installation here
 
 ## Bot Demo
 The demo is live bot on the repository's `github.io` page here: <a href="https://xtianus79.github.io/ngx-microsoft-bot-framework/" target="_blank">https://xtianus79.github.io/ngx-microsoft-bot-framework</a>

@@ -1,27 +1,29 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { BotDirective } from './bot.directive';
-import { StyleSetDirective } from './style-set.directive';
+import { BotDirective } from './directives/bot.directive';
+import { BotHelperDirective } from './directives/bot-helper.directive';
+import { StyleSetDirective } from './directives/style-set.directive';
 import { HttpClientModule } from '@angular/common/http';
 
-import { HttpErrorHandler }     from './http-error-handler.service';
-import { MessageService }       from './message.service';
+import { HttpErrorHandler }     from './services/http-error-handler.service';
+import { MessageService }       from './services/message.service';
 
 
 @NgModule({
   declarations: [
     BotDirective,
-    StyleSetDirective,
+    BotHelperDirective,
+    StyleSetDirective
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    HttpClientModule
   ],
   exports: [],
   providers: [
     HttpErrorHandler,
-    MessageService,
+    MessageService
   ]
 })
 export class NgxMicrosoftBotFrameworkModule { }

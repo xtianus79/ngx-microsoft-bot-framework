@@ -1,21 +1,23 @@
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 
-import { BotDirective, StyleSetDirective, BotService, ComService, IPayload, DEFAULT_OPTIONS } from 'ngx-microsoft-bot-framework';
+import { BotDirective, BotHelperDirective, StyleSetDirective, BotService, ComService, IWebChat, IPayload, DEFAULT_OPTIONS } from 'ngx-microsoft-bot-framework';
 
 @Component({
     selector: "app-root",
     templateUrl: "./app.component.html",
-    providers: [BotService, ComService, BotDirective, StyleSetDirective],
+    providers: [BotService, ComService, BotDirective, BotHelperDirective, StyleSetDirective],
     styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements AfterViewInit, OnInit {
     @ViewChild("botWindow", { static: false }) botWindowElement: ElementRef;
     passViewChild: ViewChild;
+    renderObject: IWebChat;
 
     payload: IPayload = {
       secret: 'VQDSUGBn3Lo.SxWHKP4UXAvJWZaLXkUQGBABH4sjZU3NIjeesJnmW-g',
       url: 'https://webchat.botframework.com/api/tokens',
       secretSetting: true,
+      userId: 'USER_ID',
       webSocket: true
     };
     stylesetPayload: DEFAULT_OPTIONS = {
@@ -87,9 +89,10 @@ export class AppComponent implements AfterViewInit, OnInit {
     error: any;
 
     constructor(
-      private appService: BotService,
+      private botService: BotService,
       private comService: ComService,
-      private bot: BotDirective
+      private bot: BotDirective,
+      private botHelper: BotHelperDirective
     ) { }
     
     public ngOnInit(): void {
@@ -98,8 +101,85 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
 
     public ngAfterViewInit(): void {
-      this.setBotDirective();
+      // this.setBotDirective();
+      this.customBotDirective();
     }
+
+    customBotDirective(): void {
+      let token: string;
+      this.passViewChild = this.botWindowElement.nativeElement;
+      this.botService.getTokenObs()
+        .subscribe(
+          response => {
+            this.payload.secretSetting ? token = response.body : token = this.payload.secret;
+                if (response.status == 200 && response.statusText == 'OK' || response == false) {
+                  const directLine = window.WebChat.createDirectLine({
+                      secret: token,
+                      webSocket: this.payload.webSocket
+                  });
+
+                  const styleSet = window.WebChat.createStyleSet(this.stylesetPayload);
+                  
+                  let userId = 'USER_ID';
+                  this.renderObject = {
+                    directLine: directLine,
+                    userID: 'USER_ID',
+                    styleOptions: this.styleOptionsPayload,
+                    styleSet: styleSet,
+                    disabled: false
+                  }
+                  // this.bot.renderWebChat(this.passViewChild, null, directLine, userId, this.styleOptionsPayload, styleSet);
+
+                  this.botHelper.renderWebChat(this.passViewChild, this.renderObject);
+
+                   directLine
+                    .postActivity({
+                        from: { id: "USER_ID", name: "USER_NAME" },
+                        name: "requestWelcomeDialog",
+                        type: "event",
+                        value: "token"
+                    })
+                    .subscribe(
+                        id => console.log(`Posted activity, assirgned ID ${id}`),
+                        error => console.log(`Error posting activity ${error}`)
+                    );
+
+                    styleSet.textContent = Object.assign(
+                      {},
+                      styleSet.textContent,
+                      {
+                        cursor: 'crosshair',
+                        color: 'white'
+                      }
+                    );
+                    styleSet.root = Object.assign(
+                      {},
+                      styleSet.root,
+                      {
+                        /* width */
+                        ' ::-webkit-scrollbar': {
+                          width: '3px'
+                        },
+
+                        /* Track */
+                        ' ::-webkit-scrollbar-track': {
+                          background: '#131313' 
+                        },
+
+                        /* Handle */
+                        ' ::-webkit-scrollbar-thumb': {
+                          background: '#353535' 
+                        },
+
+                        /* Handle on hover */
+                        ' ::-webkit-scrollbar-thumb:hover': {
+                          background: 'red' 
+                        }           
+                      }
+                    );
+                }
+        });
+      }
 
     setBotDirective(): void {
       this.passViewChild = this.botWindowElement.nativeElement;
@@ -115,7 +195,7 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
 
     makeError() {
-      this.appService.makeIntentionalError().subscribe(null, error => this.error = error );
+      this.botService.makeIntentionalError().subscribe(null, error => this.error = error );
     }
 
     

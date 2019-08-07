@@ -13,6 +13,7 @@ export * from './lib/services/http-error-handler.service';
 export * from './lib/services/message.service';
 // interfaces
 export * from './lib/interfaces/bot-payload';
+export * from './lib/interfaces/webchat';
 export * from './lib/interfaces/default-options';
 export * from './lib/interfaces/payload-response';
 export * from './lib/interfaces/style-set';

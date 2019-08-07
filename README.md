@@ -10,7 +10,7 @@
 <a target="_blank" href="https://github.com/xtianus79/ngx-microsoft-bot-framework"><img src="https://i.imgur.com/UZVFXHS.png"/></a>
 
 # Why ngx-microsoft-bot-framework?
-This Angular library achieves 2 goals
+This Angular library achieves 3 goals
 
 1. Easy setup to render a Web Chat bot in your Angular application including providing the secret webchat key for the bot application. You can use a web call for a temporary token or directly use your secret key.
 2. It allows you to add 2 styling guidelines for your microsoft chat bots
@@ -20,6 +20,7 @@ This Angular library achieves 2 goals
 
     2b. The **Other alternative** to styling the chat bot is the "Idiosyncratic Manual Styling." This is acheived via createStyleSet. This has full access to the webchat dependency for styling specific property methods. More information can be found here: 
     [Idiosyncratic Manual Styling.](https://github.com/microsoft/BotFramework-WebChat/tree/master/samples/05.b.idiosyncratic-manual-styling)
+  3. Provide flexability of using either the WebChat library directly via the `BotHelperDirective.renderWebChat()` method in an app component or by using the provided feature set of the `botDirective()` to initiate the webchat bot. Either method uses the `BotService` to pass the secret key either directly in the app or through the bot-framework api to recieve and use a temporary token which is recommended.
     
 
 You can add a one or both objects to achieve your styling goals. From my testing you may have to use both styles because the base properties are not the same across methods. Text color is achieved in styleSetOptions but not used in createStyleSet.  So while createStyleSet allows you to use custom objects i.e. root you will need the other payload to achieve text styling.  Hopefully, Microsoft works this out in future updates.  
@@ -87,8 +88,8 @@ Import all of these interfaces, classes and life-cycle hooks into the component 
 <!--- app.component.ts -->
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild } from "@angular/core";
 ```
-#### Note: Depending on your webchat implementation you may only wish to use the `BotDirective` or the `BotHelperDirective`
 Import the `ngx-microsoft-bot-framework` module and it's directives, services and interfaces: 
+##### Note: Depending on your webchat implementation you may only wish to use the `BotDirective` or the `BotHelperDirective`
 ```javascript
 import { BotDirective, BotHelperDirective, StyleSetDirective, BotService, ComService, IPayload, DEFAULT_OPTIONS } from 'ngx-microsoft-bot-framework';
 ```
@@ -99,8 +100,8 @@ passViewChild: ViewChild;
 ```
 
 Add the default `Payload` property:
-#### Note: The url is optional if the `secretSetting` is set to false | `userId` and `webSocket` are optional settings
 The false setting for `secretSetting` disables the web call to the botframework/api/token generator so the url is not neccessary:
+##### Note: The url is optional if the `secretSetting` is set to false | `userId` and `webSocket` are optional settings
 ```javascript
 payload: IPayload = {
     secret: 'VQDSUGBn3Lo.SxWHKP4UXAvJWZaLXkUQGBABH4sjZU3NIjeesJnmW-g',
@@ -143,10 +144,9 @@ stylesetPayload: DEFAULT_OPTIONS = {
       ...
     };
 ```
-Add the bot services and bot directive to the constructor:
+Add the communicatoin services and bot directive to the constructor:
 ```javascript
 constructor(
-    private appService: AppService,
     private comService: ComService,
     private bot: BotDirective
 ) { }
@@ -217,24 +217,218 @@ That's It! You should be off and running at this point
 I am aware that more options from the webchat api will need to have the option to passthrough through the payload such as userId and Name and other api properties. This will be added in a future release.
 
 ## Advanced Installation
-advanced installation here
+You, like all great developers, like to have full-controll of your library's capabilities. The previous use case can be for production and demo purposes but there may be other features/concerns such as connection status checks, postActivity, general api information, etc. that you would want full access to.
+
+With the v1.1.0 update the `BotHelperDirective`'s primary function is the renderWebChat() method. This is overloaded with 4 signatures total. This allows you to take over direct control over the WebChat api's properties and methods.
+
+The main reason for this is to gain access to the directLine api and all of the other `WebChat` properties and methods. You can read more about all of the directLine api capabilities here <a href="https://github.com/microsoft/BotFramework-DirectLineJS" target="_blank">https://github.com/microsoft/BotFramework-DirectLineJS</a>. Later, I will illustrate how to install the npm DirectLineJS library to use the `ConnectionStatus` class for granular bot activity returns such as `FailedToConnect`.  
+
+### Advanced installation instructions
+If you followed the instructions above. In your app.component.ts file's `ngAfterViewInit()` comment out the following:
+```javascript
+<!--- app.component.ts -->
+// this.setBotDirective();
+```
+Import `botHelperDirective` and `IWebChat` from the `ngx-microsoft-bot-framework` library:
+```javascript
+import { ..., BotHelperDirective, IWebChat, ... } from 'ngx-microsoft-bot-framework';
+```
+Add the `BotHelperDirective` to the app component providor:
+```javascript
+@Component({
+  ...
+  providers: [BotService, ComService, BotDirective, BotHelperDirective, StyleSetDirective],
+  ...
+})
+```
+Add the `renderObject` property :
+```javascript
+renderObject: IWebChat;
+```
+Add `BotHelperDirective` and `BotService` to the constructor:
+```javascript
+constructor(
+    private comService: ComService,
+    private bot: BotDirective,
+    private botHelper: BotHelperDirective,
+    private botService: BotService,
+) { }
+```
+Copy this code into your app component below your `ngOnInit` function:
+```javascript
+    customBotDirective(): void {
+      let token: string;
+      this.passViewChild = this.botWindowElement.nativeElement;
+      this.botService.getTokenObs()
+        .subscribe(
+          response => {
+            this.payload.secretSetting ? token = response.body : token = this.payload.secret;
+                if (response.status == 200 && response.statusText == 'OK' || response == false) {
+                  const directLine = window.WebChat.createDirectLine({
+                      secret: token,
+                      webSocket: true
+                  });
+
+                  const styleSet = window.WebChat.createStyleSet(this.stylesetPayload);
+                  
+                  let userId = 'USER_ID';
+                  this.renderObject = {
+                    directLine: directLine,
+                    userID: 'USER_ID',
+                    styleOptions: this.styleOptionsPayload,
+                    styleSet: styleSet,
+                    disabled: false
+                  }
+                  // this.bot.renderWebChat(this.passViewChild, null, directLine, userId, this.styleOptionsPayload, styleSet);
+
+                  this.botHelper.renderWebChat(this.passViewChild, this.renderObject);
+
+                   directLine
+                    .postActivity({
+                        from: { id: "USER_ID", name: "USER_NAME" },
+                        name: "requestWelcomeDialog",
+                        type: "event",
+                        value: "token"
+                    })
+                    .subscribe(
+                        id => console.log(`Posted activity, assirgned ID ${id}`),
+                        error => console.log(`Error posting activity ${error}`)
+                    );
+
+                    styleSet.textContent = Object.assign(
+                      {},
+                      styleSet.textContent,
+                      {
+                        cursor: 'crosshair',
+                        color: 'white'
+                      }
+                    );
+                    styleSet.root = Object.assign(
+                      {},
+                      styleSet.root,
+                      {
+                        ... css here       
+                      }
+                    );
+                }
+        });
+      }
+```
+Let's break apart the above code to understand what is going on here
+
+1. Use the `botService` to generate your payload's token settings
+2. Initiate the `WebChat.createDirectLine` api
+```javascript
+this.botService.getTokenObs()
+        .subscribe(
+          response => {
+            this.payload.secretSetting ? token = response.body : token = this.payload.secret;
+                if (response.status == 200 && response.statusText == 'OK' || response == false) {
+                  const directLine = window.WebChat.createDirectLine({
+                      secret: token,
+                      webSocket: true
+                  });
+```
+3. Use the `botHelper`'s `renderWebChat()` to intiate the `WebChat` api properties.  Below is an example object, `renderObject` of api properties that can be set.
+##### Note: You can choose to render the object to pass through or use individual settings in the method overload to intitate the `renderWebChat()` method. Either provide settings and not the renderObject i.e. `null` or the `this.passViewChild` and `this.renderObject` property and object
+A short list of the `WebChat` can be found here: [Api Properties](#api)
+```javascript
+let userId = 'USER_ID';
+this.renderObject = {
+  directLine: directLine,
+  userID: 'USER_ID',
+  styleOptions: this.styleOptionsPayload,
+  styleSet: styleSet,
+  disabled: false
+}
+// this.bot.renderWebChat(this.passViewChild, null, directLine, userId, this.styleOptionsPayload, styleSet);
+
+this.botHelper.renderWebChat(this.passViewChild, this.renderObject);
+```
+4. Use `directLine.postActivity()` to initiate the bot i.e. a welcome adaptive card that begins when the bot is loaded
+```javascript
+directLine
+  .postActivity({
+      from: { id: "USER_ID", name: "USER_NAME" },
+      name: "requestWelcomeDialog",
+      type: "event",
+      value: "token"
+  })
+  .subscribe(
+      id => console.log(`Posted activity, assirgned ID ${id}`),
+      error => console.log(`Error posting activity ${error}`)
+  );
+```
+5. If using idiosyncratic styling, mentioned previously, initiate the `WebChat.createStyleSet()` method and pass through the `stylesetPayload` object previously create for your styling options
+```javascript 
+const styleSet = window.WebChat.createStyleSet(this.stylesetPayload);
+```
+6. Next, if you want to further customize styling the `styleSet` property here is an example of a customized styling option
+```javascript
+styleSet.textContent = Object.assign(
+  {},
+  styleSet.textContent,
+  {
+    cursor: 'crosshair',
+    color: 'white'
+  }
+);
+```
+7. Lastly, initiate the function in `ngAfterViewInit()`
+```javascript
+this.customBotDirective();
+```
+8. Bonus! If you want complete granular control of the `DirectLine` class and other classes such as `ConnectionStatus` import in the `BotFramework-DirectLineJS` <a href="https://github.com/microsoft/BotFramework-DirectLineJS" target="_blank"> library documented here</a> after installing the npm package
+```javascript
+npm i botframework-directlinejs
+
+import { DirectLine, ConnectionStatus } from 'botframework-directlinejs';
+```
+Example usage:
+```javascript
+directLine.connectionStatus$
+.subscribe(connectionStatus => {
+  let msg: string;
+    switch(connectionStatus) {
+        case ConnectionStatus.Uninitialized:    // the status when the DirectLine object is first created/constructed
+        msg = 'uninitialized'
+        case ConnectionStatus.Connecting:       // currently trying to connect to the conversation
+        msg = 'connecting'
+        case ConnectionStatus.Online:           // successfully connected to the converstaion. Connection is healthy so far as we know.
+        msg = 'online'
+        case ConnectionStatus.ExpiredToken:     // last operation errored out with an expired token. Your app should supply a new one.
+        case ConnectionStatus.FailedToConnect:  // the initial attempt to connect to the conversation failed. No recovery possible.
+        msg = 'FAILED'
+        case ConnectionStatus.Ended:            // the bot ended the conversation
+    }
+    console.log('msg = ', msg)
+});
+```
 
 ## Bot Demo
 The demo is live bot on the repository's `github.io` page here: <a href="https://xtianus79.github.io/ngx-microsoft-bot-framework/" target="_blank">https://xtianus79.github.io/ngx-microsoft-bot-framework</a>
 
-I may need to switch out the secret token web call to generate the temporary token.
-
 ## API
-info coming soon
+Below is a short list of api properties if you choose to pass through the `renderObject` in the `bot.renderWebChat()` method. A full list can be found here: <a href="https://github.com/microsoft/BotFramework-WebChat#web-chat-api-reference" target="_blank">https://github.com/microsoft/BotFramework-WebChat#web-chat-api-reference</a>
+
+| Property             | Description           |
+| :------------        |:-------------| 
+| activityMiddleware   | 	A chain of middleware, modeled after Redux middleware, that allows the developer to add new DOM components on the currently existing DOM of Activities. The middleware signature is the following: options => next => card => children => next(card)(children). | 
+| attachmentRenderer   | The "flattened" version of attachmentMiddleware.      | 
+| createDirectLine     | A factory method for instantiating the Direct Line object. Azure Government users should use `createDirectLine({ domain: 'https://directline.botframework.azure.us/v3/directline', token })`; to change the endpoint. The full list of parameters are: conversationId, domain, fetch, pollingInterval, secret, streamUrl, token, watermark webSocket.      | 
+| disabled             | Disable the UI (i.e. for presentation mode) of Web Chat. |
+| directLine           | Specify the DirectLine object with DirectLine token. We strongly recommend using the token API for authentication instead of providing the app with your secret. To learn more about why, see the authentication documentation or connecting client app to bot        |
+| styleOptions         | Object that stores customization values for your styling of Web Chat. For the complete list of (frequently updated) default style options, please see the defaultStyleOptions.js file. |
+| styleSet             | The non-recommended way of overriding styles. |
 
 ## Compatiblity
-info coming soon
+Comaptible as of Angular 8 ivy with botframework-webchat 4.5.1 for `ngx-microsoft-bot-framework` 1.0.0 - 1.1.0
 
 ## Troubleshooting
-info coming soon
+Report issues for help
 
 ## Contribution
-info coming soon
+Help is always welcome! This library will follow it's compatibility with official release from the official botframework-webchat api. Contributions include not only pull requests but feature additions/recommendations and feedback for improving the library.  
 
 ## License
 ### MIT

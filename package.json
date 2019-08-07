@@ -9,7 +9,15 @@
     "angular 8",
     "angular 9",
     "microsoft bot framework",
+    "azure-bot-services",
+    "adaptive-cards",
+    "chat",
+    "bot",
+    "bot-framework",
+    "conversational-ai",
+    "conversational-ui",
     "webchat",
+    "chatbot",
     "directline"
   ],
   "license": "MIT",
@@ -17,7 +25,7 @@
     "type": "git",
     "url": "https://github.com/xtianus79/ngx-microsoft-bot-framework"
   },
-  "homepage": "git+https://github.com/t-palmer/example-ng6-lib.git",
+  "homepage": "git+https://github.com/xtianus79/ngx-microsoft-bot-framework.git",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

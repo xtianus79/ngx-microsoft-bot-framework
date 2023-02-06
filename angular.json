@@ -130,6 +130,11 @@
           "options": {
             "tsConfig": "projects/ngx-microsoft-bot-framework/tsconfig.lib.json",
             "project": "projects/ngx-microsoft-bot-framework/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+
+            }
           }
         },
         "test": {

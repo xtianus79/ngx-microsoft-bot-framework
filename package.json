@@ -27,7 +27,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build_lib": "ng build NgxMicrosoftBotFramework",
+    "build_lib": "ng build NgxMicrosoftBotFramework --configuration production",
     "copy-license": "copy .\\LICENSE .\\dist\\ngx-microsoft-bot-framework",
     "copy-readme": "copy .\\README.md .\\dist\\ngx-microsoft-bot-framework",
     "copy-files": "npm run copy-license && npm run copy-readme",

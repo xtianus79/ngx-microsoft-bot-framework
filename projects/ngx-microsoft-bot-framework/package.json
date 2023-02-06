@@ -27,7 +27,7 @@
   },
   "homepage": "git+https://github.com/t-palmer/example-ng6-lib.git",
   "peerDependencies": {
-    "@angular/common": "^8.2.0",
-    "@angular/core": "^8.2.0"
+    "@angular/common": "~15.1.3",
+    "@angular/core": "~15.1.3"
   }
 }

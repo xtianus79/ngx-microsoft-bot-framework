@@ -96,6 +96,7 @@ export class AppComponent implements AfterViewInit, OnInit {
     sendBoxBorderTop: 'solid 0px #E6E6E6'
   };
   error: any;
+  title = 'ngx-microsoft-bot-framework';
 
   constructor(
     private botService: BotService,

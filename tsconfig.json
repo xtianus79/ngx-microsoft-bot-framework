@@ -3,7 +3,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "NgxMicrosoftBotFramework": [
+      "ngx-microsoft-bot-framework": [
         "dist/ngx-microsoft-bot-framework"
       ]
     },

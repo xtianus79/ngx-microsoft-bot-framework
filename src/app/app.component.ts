@@ -20,7 +20,7 @@ import {
 export class AppComponent implements AfterViewInit, OnInit {
   @ViewChild('botWindow', {static: false}) botWindowElement?: ElementRef;
   passViewChild?: ViewChild;
-  renderObject: IWebChat;
+  renderObject?: IWebChat;
 
   payload: IPayload = {
     secret: 'VQDSUGBn3Lo.SxWHKP4UXAvJWZaLXkUQGBABH4sjZU3NIjeesJnmW-g',
@@ -150,8 +150,8 @@ export class AppComponent implements AfterViewInit, OnInit {
                 value: 'token'
               })
               .subscribe(
-                id => console.log(`Posted activity, assirgned ID ${id}`),
-                error => console.log(`Error posting activity ${error}`)
+                  (id: any) => console.log(`Posted activity, assirgned ID ${id}`),
+                  (error: any) => console.log(`Error posting activity ${error}`)
               );
 
             styleSet.textContent = Object.assign(

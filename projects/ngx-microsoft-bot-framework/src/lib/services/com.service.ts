@@ -8,8 +8,8 @@ export class ComService {
 
   // Observable string sources
   private secretDirectlineToken = new Subject<IPayload>();
-  private styleSetPayload = new Subject<DEFAULT_OPTIONS>();
-  private styleOptionsPayload = new Subject<DEFAULT_OPTIONS>();
+  private styleSetPayload = new Subject<DEFAULT_OPTIONS | undefined>();
+  private styleOptionsPayload = new Subject<DEFAULT_OPTIONS | undefined>();
 
   // Observable string streams
   botPayload$ = this.secretDirectlineToken.asObservable();

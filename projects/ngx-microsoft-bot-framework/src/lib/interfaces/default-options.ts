@@ -1,4 +1,4 @@
-function fontFamily(fonts) {
+function fontFamily(fonts: any[]) {
   return fonts.map(font => `'${font}'`).join(', ');
 }
 

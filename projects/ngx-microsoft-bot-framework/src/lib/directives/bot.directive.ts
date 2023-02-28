@@ -1,37 +1,37 @@
 // directives
-import { Directive, ViewChild } from "@angular/core";
-import { StyleSetDirective } from './style-set.directive';
+import {Directive, ViewChild} from '@angular/core';
+import {StyleSetDirective} from './style-set.directive';
 // services
-import { BotService } from '../services/bot.service';
-import { ComService } from '../services/com.service';
+import {BotService} from '../services/bot.service';
+import {ComService} from '../services/com.service';
 // interfaces
-import { DEFAULT_OPTIONS } from '../interfaces/default-options';
-import { StyleSetProp } from '../interfaces/style-set';
+import {DEFAULT_OPTIONS} from '../interfaces/default-options';
+import {StyleSetProp} from '../interfaces/style-set';
 
 /**
  * Declares the WebChat property on the window object.
  */
 declare global {
-    interface Window {
-        WebChat: any;
-    }
+  interface Window {
+    WebChat: any;
+  }
 }
 
 window.WebChat = window.WebChat || {};
 
 @Directive({
-    selector: 'app-bot',
-    providers: [BotService, ComService]
+  selector: 'app-bot',
+  providers: [BotService, ComService]
 })
 export class BotDirective {
-viewChild: ViewChild;
-styleSet: StyleSetProp;
-styleOptions: DEFAULT_OPTIONS;
-secretSetting: boolean;
-secret: string;
-userId: string = 'USER_ID';
-webSocket: boolean = true;
-error: any;
+  viewChild?: ViewChild;
+  styleSet?: StyleSetProp;
+  styleOptions?: DEFAULT_OPTIONS;
+  secretSetting?: boolean;
+  secret?: string;
+  userId: string = 'USER_ID';
+  webSocket: boolean = true;
+  error: any;
 
   constructor(
     private styleSetDir: StyleSetDirective,
@@ -39,12 +39,12 @@ error: any;
     private comService: ComService
   ) {
     this.comService.botPayload$.subscribe(
-    payload => {
-      this.secretSetting = payload.secretSetting;
-      this.secret = payload.secret;
-      payload.userId != undefined ? this.userId = payload.userId : this.userId;
-      payload.webSocket != undefined ? this.webSocket = payload.webSocket : this.webSocket;
-    }); 
+      payload => {
+        this.secretSetting = payload.secretSetting;
+        this.secret = payload.secret;
+        payload.userId != undefined ? this.userId = payload.userId : this.userId;
+        payload.webSocket != undefined ? this.webSocket = payload.webSocket : this.webSocket;
+      });
     this.comService.styleSet$.subscribe(
       response => {
         if (response != null || response != undefined) {
@@ -94,76 +94,76 @@ error: any;
           this.styleOptions = response;
         }
       }
-    )
+    );
   }
+
   /**
-  * botDirective initiates the botservice to retreive token or secret,
-  * initiates renderWebChat and activates the directLine api.
-  * set styles from styleSet and styleOptions properties 
-  * @viewChild is the only required parameter
-  * Use the bot-helper for full access and control of directline webchat api
-  */
-  botDirective(viewChild): void {
+   * botDirective initiates the botservice to retreive token or secret,
+   * initiates renderWebChat and activates the directLine api.
+   * set styles from styleSet and styleOptions properties
+   * @viewChild is the only required parameter
+   * Use the bot-helper for full access and control of directline webchat api
+   */
+  botDirective(viewChild: any): void {
     this.viewChild = viewChild;
-    let token: string;
+    let token: string | undefined;
     this.botService.getTokenObs()
       .subscribe(
-        response => {            
+        response => {
           this.secretSetting ? token = response.body : token = this.secret;
           if (response.status == 200 && response.statusText == 'OK' || response == false) {
             const directLine = window.WebChat.createDirectLine({
-                secret: token,
-                webSocket: this.webSocket
+              secret: token,
+              webSocket: this.webSocket
             });
             if (this.styleSet && this.styleOptions) {
               window.WebChat.renderWebChat(
-                  {
-                      directLine: directLine,
-                      userID: this.userId,
-                      styleOptions: this.styleOptions,
-                      styleSet: this.styleSet
-                  },
-                  this.viewChild
+                {
+                  directLine: directLine,
+                  userID: this.userId,
+                  styleOptions: this.styleOptions,
+                  styleSet: this.styleSet
+                },
+                this.viewChild
               );
             } else if (this.styleSet && !this.styleOptions) {
               window.WebChat.renderWebChat(
-                  {
-                      directLine: directLine,
-                      userID: this.userId,
-                      styleSet: this.styleSet
-                  },
-                  this.viewChild
+                {
+                  directLine: directLine,
+                  userID: this.userId,
+                  styleSet: this.styleSet
+                },
+                this.viewChild
               );
-            } 
-            else if (this.styleOptions && !this.styleSet) {
+            } else if (this.styleOptions && !this.styleSet) {
               window.WebChat.renderWebChat(
-                  {
-                      directLine: directLine,
-                      userID: this.userId,
-                      styleOptions: this.styleOptions,
-                  },
-                  this.viewChild
+                {
+                  directLine: directLine,
+                  userID: this.userId,
+                  styleOptions: this.styleOptions
+                },
+                this.viewChild
               );
             } else {
               window.WebChat.renderWebChat(
-                  {
-                      directLine: directLine,
-                      userID: this.userId,
-                  },
-                  this.viewChild
+                {
+                  directLine: directLine,
+                  userID: this.userId
+                },
+                this.viewChild
               );
             }
             directLine
-                .postActivity({
-                    from: { id: this.userId, name: "USER_NAME" },
-                    name: "requestWelcomeDialog",
-                    type: "event",
-                    value: "token"
-                })
-                .subscribe(
-                    id => console.log(`Posted activity, assigned ID ${id}`),
-                    error => console.log(`Error posting activity ${error}`)
-                );
+              .postActivity({
+                from: {id: this.userId, name: 'USER_NAME'},
+                name: 'requestWelcomeDialog',
+                type: 'event',
+                value: 'token'
+              })
+              .subscribe({
+                next: (id: any) => console.log(`Posted activity, assigned ID ${id}`),
+                error: (error: any) => console.log(`Error posting activity ${error}`)
+              });
           }
           if (this.styleSet != null || this.styleSet != undefined) {
             this.styleSet.activities = this.styleSetDir.Activities(this.styleSet.activities, this.styleSetDir.activities);
@@ -206,7 +206,8 @@ error: any;
         }
       );
   }
+
   makeError() {
-    this.botService.makeIntentionalError().subscribe(null, error => this.error = error );
+    this.botService.makeIntentionalError().subscribe({error: error => this.error = error});
   }
 }

@@ -1,6 +1,6 @@
 {
-  "name": "ngx-microsoft-bot-framework",
-  "version": "1.1.0",
+  "name": "ngx-microsoft-bot-framework-15",
+  "version": "2.0.1",
   "description": "Microsoft Bot Framework for Angular implementation with webchat via the directline api",
   "keywords": [
     "Angular",
@@ -8,6 +8,7 @@
     "angular 7",
     "angular 8",
     "angular 9",
+    "angular 15",
     "microsoft bot framework",
     "azure-bot-services",
     "adaptive-cards",
@@ -23,11 +24,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xtianus79/ngx-microsoft-bot-framework"
+    "url": "https://github.com/giorgialarosa/ngx-microsoft-bot-framework"
   },
-  "homepage": "git+https://github.com/t-palmer/example-ng6-lib.git",
+  "homepage": "git+https://github.com/giorgialarosa/ngx-microsoft-bot-framework.git",
   "peerDependencies": {
-    "@angular/common": "^8.2.0",
-    "@angular/core": "^8.2.0"
-  }
+    "@angular/common": "^15.1.0",
+    "@angular/core": "^15.1.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
 }

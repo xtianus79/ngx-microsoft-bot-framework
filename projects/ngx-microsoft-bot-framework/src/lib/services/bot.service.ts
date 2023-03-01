@@ -17,10 +17,10 @@ const httpOptions = {
 
 @Injectable()
 export class BotService {
-  webchatUrl: string;
+  webchatUrl?: string;
   subscription: Subscription;
-  botTokenHeader: HttpHeaders;
-  secretSetting: boolean;
+  botTokenHeader?: HttpHeaders;
+  secretSetting?: boolean;
   private handleError: HandleError;
 
   constructor(
@@ -40,9 +40,9 @@ export class BotService {
 
   /** GET temporary token from the server api */
   public getTokenObs (): Observable<any> {
-    if (this.secretSetting) {
+    if (this.secretSetting && this.webchatUrl) {
       return this.http.get<any>(
-        this.webchatUrl, 
+        this.webchatUrl,
         { headers: this.botTokenHeader, observe: 'response' }
       )
       .pipe(

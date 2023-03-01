@@ -3,6 +3,5 @@
   "dest": "../../dist/ngx-microsoft-bot-framework",
   "lib": {
     "entryFile": "src/public-api.ts"
-  },
-  "whitelistedNonPeerDependencies": ["jquery"]
+  }
 }

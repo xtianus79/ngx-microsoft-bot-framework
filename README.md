@@ -2,9 +2,8 @@
 [Why ngx-microsoftbot-framework?](#why-ngx-microsoft-bot-framework?) | [Table of Contents](#table-of-contents) | [Installation](#installation) | [Advanced Installation](#advanced-installation)
 
 <div>
-    <a href="https://badge.fury.io/js/ngx-microsoft-bot-framework"><img src="https://badge.fury.io/js/ngx-microsoft-bot-framework.svg" alt="npm version" height="18"></a>
-    <a href="https://npmjs.org/ngx-microsoft-bot-framework"><img alt="npm" src="https://img.shields.io/npm/dm/ngx-microsoft-bot-framework?color=blue&style=flat-square" alt="npm downloads"></a>
-    <a href="https://david-dm.org/xtianus79/ngx-microsoft-bot-framework"><img alt="npm" src="https://david-dm.org/xtianus79/ngx-microsoft-bot-framework.svg" alt="npm dependencies"></a>
+    <a href="https://badge.fury.io/js/ngx-microsoft-bot-framework-15"><img src="https://badge.fury.io/js/ngx-microsoft-bot-framework-15.svg" alt="npm version" height="18"></a>
+    <a href="https://npmjs.org/ngx-microsoft-bot-framework-15"><img alt="npm" src="https://img.shields.io/npm/dm/ngx-microsoft-bot-framework-15?color=blue&style=flat-square" alt="npm downloads"></a>
 </div>
 
 <a target="_blank" href="https://github.com/xtianus79/ngx-microsoft-bot-framework"><img src="https://i.imgur.com/UZVFXHS.png"/></a>
@@ -59,7 +58,7 @@ ngx-microsoft-botframework does not contain any core build files. It uses the di
 ## Installation
 
 ##### Scenario 1
-Install `ngx-microsoft-bot-framework` via `npm`:
+Install `ngx-microsoft-bot-framework-15` via `npm`:
 ```bash
 npm i ngx-microsoft-bot-framework-15 --save
 ```
@@ -406,7 +405,7 @@ directLine.connectionStatus$
 ```
 
 ## Bot Demo
-The demo is live bot on the repository's `github.io` page here: <a href="https://xtianus79.github.io/ngx-microsoft-bot-framework/" target="_blank">https://xtianus79.github.io/ngx-microsoft-bot-framework</a>
+The demo is live bot on the repository's `github.io` page here: <a href="https://xtianus79.github.io/ngx-microsoft-bot-framework/" target="_blank">https://xtianus79.github.io/ngx-microsoft-bot-framework </a>
 
 ## API
 Below is a short list of api properties if you choose to pass through the `renderObject` in the `bot.renderWebChat()` method. A full list can be found here: <a href="https://github.com/microsoft/BotFramework-WebChat#web-chat-api-reference" target="_blank">https://github.com/microsoft/BotFramework-WebChat#web-chat-api-reference</a>
@@ -422,7 +421,7 @@ Below is a short list of api properties if you choose to pass through the `rende
 | styleSet             | The non-recommended way of overriding styles. |
 
 ## Compatiblity
-Comaptible as of Angular 8 ivy with botframework-webchat 4.5.1 for `ngx-microsoft-bot-framework` 1.0.0 - 1.1.0
+Comaptible as of Angular 8 ivy with botframework-webchat 4.5.1 for `ngx-microsoft-bot-framework-15` 2.0.0
 
 ## Troubleshooting
 Report issues for help

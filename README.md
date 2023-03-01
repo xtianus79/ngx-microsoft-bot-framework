@@ -61,13 +61,13 @@ ngx-microsoft-botframework does not contain any core build files. It uses the di
 ##### Scenario 1
 Install `ngx-microsoft-bot-framework` via `npm`:
 ```bash
-npm i ngx-microsoft-bot-framework --save
+npm i ngx-microsoft-bot-framework-15 --save
 ```
 
 ##### Scenario 2
 Use the Angular-Cli ng add command to update the Angular project:
 ```bash
-ng add ngx-microsoft-bot-framework
+ng add ngx-microsoft-bot-framework-15
 ```
 
 ##### Continuing...

@@ -1,6 +1,6 @@
 {
   "name": "@accdavcarrier/ngx-microsoft-bot-framework",
-  "version": "15.1.4",
+  "version": "15.1.5",
   "description": "Microsoft Bot Framework for Angular implementation with webchat via the directline api (forked from xtianus79). Compatible with Angular 15",
   "keywords": [
     "Angular",
@@ -24,7 +24,7 @@
   },
   "homepage": "git+https://github.com/t-palmer/example-ng6-lib.git",
   "peerDependencies": {
-    "@angular/common": "~15.1.3",
-    "@angular/core": "~15.1.3"
+    "@angular/common": "~15.1.5",
+    "@angular/core": "~15.1.5"
   }
 }

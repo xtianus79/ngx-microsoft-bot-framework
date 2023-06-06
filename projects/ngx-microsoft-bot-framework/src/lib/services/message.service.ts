@@ -8,6 +8,10 @@ export class MessageService {
     this.messages.push(message);
   }
 
+  test(testMsg: string) {
+    console.log("Bonjour !");
+  }
+
   clear() {
     this.messages = [];
   }

@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "bac2d9f3-e6c4-43b3-8963-1f72aa772455"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -123,10 +126,15 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/ngx-microsoft-bot-framework/tsconfig.lib.json",
             "project": "projects/ngx-microsoft-bot-framework/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+
+            }
           }
         },
         "test": {
